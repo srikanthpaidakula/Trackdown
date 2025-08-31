@@ -8,8 +8,8 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const TOKEN = process.env["bot"];
 const WEBHOOK_URL = process.env["WEBHOOK_URL"]; // Your public URL with /bot endpoint
-const bot = new TelegramBot(TOKEN);
-bot.setWebHook(`${WEBHOOK_URL}/bot`);
+const bot = new TelegramBot(TOKEN, { polling: true });
+
 
 const jsonParser = bodyParser.json({ limit: 1024 * 1024 * 20, type: 'application/json' });
 const urlencodedParser = bodyParser.urlencoded({ extended: true, limit: 1024 * 1024 * 20, type: 'application/x-www-form-urlencoded' });
